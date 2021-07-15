@@ -1,14 +1,16 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import "./App.css";
 import FormularioCadastro from "./components/FormulariosCadastro/formularioCadastro";
+import "@fontsource/roboto";
 
+import {Container, Typography } from '@material-ui/core';
 class App extends Component {
   render() {
     return (
-      <Fragment>
-        <h1>Formulário de cadastro</h1>
+        <Container component="article" maxWidth="sm">
+        <Typography variant="h2" component="h1" align="center">Formulário de cadastro</Typography>
         <FormularioCadastro />
-      </Fragment>
+        </Container>
     );
   }
 }
