@@ -2,16 +2,37 @@ import React, { useState } from 'react';
 import { Button, TextField } from '@material-ui/core';
 
 
-function DadosUsuario({aoEnviar}){
+function DadosUsuario({aoEnviar, validacoes}){
 
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
 
 
+    const [erros, setErros] = useState({senha:{valido:true, texto:""}})
+
+
+    function validarCampos(event){
+      const {name, value} = event.target;
+      const novoEstado = {...erros}
+      novoEstado[name] = validacoes[name](value);
+      setErros(novoEstado);
+    } 
+
+    function possoEnviar(){
+        for(let campo in erros){
+            if(!erros[campo].valido){
+                return false 
+            }
+        }
+        return true;
+    }
+
     return(
          <form onSubmit={(event) =>{
              event.preventDefault();
+             if(possoEnviar()){
              aoEnviar({email, senha});
+            }
          }}
          
          
@@ -24,6 +45,7 @@ function DadosUsuario({aoEnviar}){
             }
              id="email"
              label="email"
+             name= "email"
              type="email"
              required
              variant="outlined" 
@@ -36,8 +58,12 @@ function DadosUsuario({aoEnviar}){
                  setSenha(event.target.value)
               }
              }
+             onBlur={validarCampos}
+             error={!erros.senha.valido}
+             helperText={erros.senha.texto}
              id="senha"
              label="senha"
+             name="senha"
              type="password"
              required
              variant="outlined" 
@@ -45,7 +71,7 @@ function DadosUsuario({aoEnviar}){
              fullWidth
              />
              <Button type="submit" variant="contained" color="primary">
-                 Cadastrar
+                 Proximo
              </Button>
 
          </form>
